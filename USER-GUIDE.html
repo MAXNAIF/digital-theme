@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل المستخدم — ثيم ديمو للمنتجات الرقمية</title>
+<style>
+  :root {
+    --primary: #6448E8;
+    --primary-light: #8B72F0;
+    --accent: #0EA5E9;
+    --dark: #1E1B4B;
+    --text: #374151;
+    --muted: #6B7280;
+    --border: #E5E7EB;
+    --bg: #F8F9FF;
+    --white: #FFFFFF;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 15px;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .layout { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    background: var(--dark);
+    color: #fff;
+    position: fixed;
+    top: 0; right: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 40px;
+  }
+
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 16px;
+  }
+  .sidebar-logo h2 {
+    font-size: 22px; font-weight: 800; color: #fff;
+  }
+  .sidebar-logo h2 span { color: var(--primary-light); }
+  .sidebar-logo p { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+  .sidebar nav a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 24px;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 14px;
+    border-right: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .sidebar nav a:hover,
+  .sidebar nav a.active {
+    color: #fff;
+    background: rgba(139,114,240,0.15);
+    border-right-color: var(--primary-light);
+  }
+  .sidebar nav .nav-section {
+    padding: 16px 24px 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main {
+    margin-right: 280px;
+    flex: 1;
+    max-width: 900px;
+    padding: 48px 48px 80px;
+  }
+
+  /* ===== HERO ===== */
+  .guide-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, #4F35CC 100%);
+    border-radius: 20px;
+    padding: 48px 40px;
+    color: #fff;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .guide-hero::before {
+    content: '';
+    position: absolute; top: -40px; left: -40px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+  .guide-hero::after {
+    content: '';
+    position: absolute; bottom: -60px; left: 60px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  .guide-hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; }
+  .guide-hero p { font-size: 16px; opacity: 0.85; max-width: 520px; }
+  .hero-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+  .hero-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 5px 14px; border-radius: 20px;
+    font-size: 13px; font-weight: 600;
+  }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    margin-bottom: 56px;
+    scroll-margin-top: 24px;
+  }
+
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 22px; font-weight: 800; color: var(--dark); }
+
+  /* ===== STEPS ===== */
+  .steps { display: flex; flex-direction: column; gap: 16px; }
+  .step {
+    display: flex; gap: 16px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    transition: box-shadow 0.2s;
+  }
+  .step:hover { box-shadow: 0 4px 16px rgba(100,72,232,0.08); }
+  .step-num {
+    width: 36px; height: 36px; flex-shrink: 0;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 15px;
+  }
+  .step-content h4 { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+  .step-content p { font-size: 14px; color: var(--muted); }
+
+  /* ===== CARDS GRID ===== */
+  .cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 20px;
+    transition: all 0.25s;
+  }
+  .card:hover { border-color: var(--primary-light); box-shadow: 0 4px 16px rgba(100,72,232,0.08); }
+  .card-icon { font-size: 28px; margin-bottom: 10px; }
+  .card h4 { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+  .card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  /* ===== FEATURE LIST ===== */
+  .feature-list { display: flex; flex-direction: column; gap: 12px; }
+  .feature-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .feature-item .fi-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .feature-item h4 { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 2px; }
+  .feature-item p { font-size: 13px; color: var(--muted); }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block {
+    background: var(--dark);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin: 14px 0;
+    overflow-x: auto;
+  }
+  .code-block code {
+    color: #A5B4FC;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre;
+  }
+  .code-block .comment { color: #6B7280; }
+  .code-block .key { color: #F472B6; }
+  .code-block .value { color: #34D399; }
+
+  /* ===== ALERTS ===== */
+  .alert {
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 14px;
+  }
+  .alert-icon { font-size: 18px; flex-shrink: 0; }
+  .alert-info { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1E40AF; }
+  .alert-success { background: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46; }
+  .alert-warning { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
+  .alert strong { font-weight: 700; }
+
+  /* ===== COLOR PALETTE ===== */
+  .colors-grid { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+  .color-chip {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  .color-dot { width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0; }
+
+  /* ===== FAQ ===== */
+  .faq-item {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .faq-q {
+    background: var(--white);
+    padding: 16px 20px;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--dark);
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .faq-a {
+    background: var(--bg);
+    padding: 14px 20px;
+    font-size: 14px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    display: none;
+  }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .faq-q { color: var(--primary); }
+  .faq-arrow { transition: transform 0.2s; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+  /* ===== TABLE ===== */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; background: var(--white); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+  th { background: var(--dark); color: #fff; padding: 12px 16px; font-size: 13px; font-weight: 700; text-align: right; }
+  td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg); }
+
+  /* ===== BADGE ===== */
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+  .badge-green { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+  .badge-blue { background: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }
+  .badge-purple { background: #EDE9FE; color: #5B21B6; border: 1px solid #C4B5FD; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-right: 0; padding: 24px 20px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .guide-hero { padding: 28px 24px; }
+    .guide-hero h1 { font-size: 22px; }
+  }
+
+  /* Print */
+  @media print {
+    .sidebar { display: none; }
+    .main { margin-right: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <h2>دي<span>مو</span></h2>
+    <p>دليل المستخدم v1.0</p>
+  </div>
+  <nav>
+    <div class="nav-section">البداية</div>
+    <a href="#intro">⚡ مقدمة الثيم</a>
+    <a href="#features">✨ المميزات الكاملة</a>
+    <a href="#install">📦 التثبيت والإعداد</a>
+
+    <div class="nav-section">التخصيص</div>
+    <a href="#colors">🎨 تغيير الألوان</a>
+    <a href="#dark-mode">🌙 الوضع الداكن</a>
+    <a href="#sections">📄 أقسام الصفحة الرئيسية</a>
+    <a href="#products">🛍️ إعداد المنتجات</a>
+
+    <div class="nav-section">الصفحات</div>
+    <a href="#pages">📑 الصفحات المتاحة</a>
+    <a href="#product-page">📦 صفحة المنتج الرقمي</a>
+    <a href="#footer">🦶 الفوتر</a>
+
+    <div class="nav-section">الدعم</div>
+    <a href="#faq">❓ أسئلة شائعة</a>
+    <a href="#support">🎧 تواصل معنا</a>
+  </nav>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="guide-hero">
+    <h1>دليل استخدام ثيم ديمو 🚀</h1>
+    <p>ثيم متخصص للمنتجات الرقمية مع وضع داكن وفاتح أنيق. هذا الدليل يشرح كل شيء من التثبيت حتى التخصيص الكامل.</p>
+    <div class="hero-badges">
+      <span class="hero-badge">⚡ تسليم فوري</span>
+      <span class="hero-badge">🌙 Dark & Light Mode</span>
+      <span class="hero-badge">📱 متجاوب مع الجوال</span>
+      <span class="hero-badge">🎨 ألوان قابلة للتخصيص</span>
+    </div>
+  </div>
+
+  <!-- 1. INTRO -->
+  <section class="section" id="intro">
+    <div class="section-header">
+      <div class="section-icon">⚡</div>
+      <h2>مقدمة عن الثيم</h2>
+    </div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h4>مصمم للمنتجات الرقمية</h4>
+        <p>ثيم متخصص للمنتجات الرقمية مثل الكورسات والقوالب والبرامج مع عرض واضح لمميزات التسليم الفوري.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌙</div>
+        <h4>Dark & Light Mode</h4>
+        <p>زر تبديل في الهيدر يتيح للزوار التبديل بين الوضع الداكن والفاتح، ويحفظ اختيارهم تلقائياً.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📱</div>
+        <h4>متجاوب بالكامل</h4>
+        <p>يعمل بشكل مثالي على الجوال والتابلت وسطح المكتب مع تصميم متكيف لكل الأحجام.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h4>سريع وخفيف</h4>
+        <p>مبني على Tailwind CSS وبُنية محسّنة لسرعة تحميل عالية وأداء ممتاز.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. FEATURES -->
+  <section class="section" id="features">
+    <div class="section-header">
+      <div class="section-icon">✨</div>
+      <h2>المميزات الكاملة</h2>
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <span class="fi-icon">🌙</span>
+        <div>
+          <h4>Dark / Light Mode تلقائي</h4>
+          <p>زر في الهيدر للتبديل بين الوضعين، يحفظ التفضيل في المتصفح تلقائياً عند كل زيارة.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="fi-icon">⚡</span>
+        <div>
+          <h4>بانر "تسليم فوري" للمنتجات الرقمية</h4>
+          <p>يظهر تلقائياً على صفحة كل منتج رقمي يوضح أن التسليم فوري بعد الدفع.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="fi-icon">🎨</span>
+        <div>
+          <h4>ألوان متناسقة بنفسجية أنيقة</h4>
+          <p>باليت ألوان احترافي يمكن تعديله بسهولة من لوحة تحكم سلة.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="fi-icon">🏠</span>
+        <div>
+          <h4>صفحة رئيسية كاملة (9 أقسام)</h4>
+          <p>Hero + مميزات + أحدث المنتجات + الأكثر مبيعاً + عروض + لماذا نختارنا + آراء العملاء + CTA + شركاء.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="fi-icon">📦</span>
+        <div>
+          <h4>صفحة منتج رقمي محسّنة</h4>
+          <p>تعرض 4 مميزات رقمية (تحميل فوري، دفع آمن، وصول دائم، دعم فني) تلقائياً على المنتجات الرقمية.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="fi-icon">🦶</span>
+        <div>
+          <h4>فوتر احترافي متعدد الأعمدة</h4>
+          <p>يشمل وصف المتجر، روابط سريعة، معلومات التواصل، وتطبيقات الجوال مع شارات رقمية أنيقة.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="fi-icon">📱</span>
+        <div>
+          <h4>تصميم Responsive كامل</h4>
+          <p>يعمل على جميع أحجام الشاشات بدون أي مشاكل في العرض.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="fi-icon">🔒</span>
+        <div>
+          <h4>متوافق مع سلة بالكامل</h4>
+          <p>يدعم جميع مكونات سلة: السلة، الحساب، البحث، التقييمات، الكوبونات، والمزيد.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. INSTALL -->
+  <section class="section" id="install">
+    <div class="section-header">
+      <div class="section-icon">📦</div>
+      <h2>التثبيت والإعداد</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>اشترِ الثيم من متجر ثيمات سلة</h4>
+          <p>بعد الشراء ستجد الثيم في لوحة التحكم تحت قسم "التصميم" ← "الثيمات".</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>اضغط "تفعيل" على الثيم</h4>
+          <p>من لوحة التحكم في سلة، اذهب إلى التصميم ← الثيمات ← اختار ثيم "ديمو" ← تفعيل.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>أضف لوغو متجرك</h4>
+          <p>من الإعدادات ← معلومات المتجر، ارفع لوغو متجرك. سيظهر تلقائياً في الهيدر.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>أضف منتجاتك الرقمية</h4>
+          <p>أضف منتجاتك من قسم "المنتجات" واختار نوع المنتج "رقمي" أو "رموز". سيظهر بانر التسليم الفوري تلقائياً.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>خصّص الألوان (اختياري)</h4>
+          <p>من التصميم ← إعدادات الثيم، يمكنك تغيير اللون الأساسي لأي لون تختاره.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <h4>احفظ وانشر متجرك 🎉</h4>
+          <p>اضغط "حفظ التغييرات" والثيم جاهز للعمل!</p>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-success">
+      <span class="alert-icon">✅</span>
+      <div><strong>تلميح:</strong> الثيم يعمل مباشرة بعد التفعيل دون أي إعدادات إضافية. المنتجات والأقسام تظهر تلقائياً.</div>
+    </div>
+  </section>
+
+  <!-- 4. COLORS -->
+  <section class="section" id="colors">
+    <div class="section-header">
+      <div class="section-icon">🎨</div>
+      <h2>تغيير الألوان</h2>
+    </div>
+    <p style="margin-bottom:20px; color:var(--muted)">الثيم يستخدم باليت ألوان بنفسجي أنيق كافتراضي. يمكنك تغييره بسهولة:</p>
+
+    <div class="colors-grid">
+      <div class="color-chip">
+        <div class="color-dot" style="background:#6448E8;"></div>
+        <div>
+          <strong>الأساسي (فاتح)</strong><br>
+          <small style="color:var(--muted)">#6448E8</small>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background:#8B72F0;"></div>
+        <div>
+          <strong>الأساسي (داكن)</strong><br>
+          <small style="color:var(--muted)">#8B72F0</small>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background:#0EA5E9;"></div>
+        <div>
+          <strong>المميز (فاتح)</strong><br>
+          <small style="color:var(--muted)">#0EA5E9</small>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background:#22D3EE;"></div>
+        <div>
+          <strong>المميز (داكن)</strong><br>
+          <small style="color:var(--muted)">#22D3EE</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps" style="margin-top:20px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>افتح لوحة التحكم في سلة</h4>
+          <p>التصميم ← محرر الثيم ← إعدادات ← اللون الأساسي.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>اختر اللون الذي تريده</h4>
+          <p>اضغط على مربع اللون واختار من الطيف. الثيم يعدّل تلقائياً الألوان الفاتحة والداكنة.</p>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-warning">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>ملاحظة:</strong> اختار لوناً ذا تباين كافٍ مع الأبيض لضمان قراءة النصوص بوضوح.</div>
+    </div>
+  </section>
+
+  <!-- 5. DARK MODE -->
+  <section class="section" id="dark-mode">
+    <div class="section-header">
+      <div class="section-icon">🌙</div>
+      <h2>الوضع الداكن / الفاتح</h2>
+    </div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">☀️</div>
+        <h4>الوضع الفاتح</h4>
+        <p>خلفية بيضاء مائلة للبنفسجي مع نصوص داكنة. مناسب للبيئات المضاءة.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌙</div>
+        <h4>الوضع الداكن</h4>
+        <p>خلفية كحلية داكنة (#0A0B14) مع نصوص فاتحة. مريح للعين في الإضاءة المنخفضة.</p>
+      </div>
+    </div>
+    <div class="alert alert-info" style="margin-top:20px;">
+      <span class="alert-icon">ℹ️</span>
+      <div>
+        <strong>كيف يعمل؟</strong><br>
+        زر القمر 🌙 في أعلى الصفحة يتيح للزائر التبديل. الاختيار يُحفظ في المتصفح ويُطبق عند كل زيارة لاحقة.
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. SECTIONS -->
+  <section class="section" id="sections">
+    <div class="section-header">
+      <div class="section-icon">📄</div>
+      <h2>أقسام الصفحة الرئيسية</h2>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>القسم</th>
+          <th>الوصف</th>
+          <th>الحالة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>🎯 Hero البانر الرئيسي</td>
+          <td>عنوان المتجر مع زرّي "تصفح المنتجات" و"تعرّف علينا"</td>
+          <td><span class="badge badge-green">تلقائي</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>⚡ شريط المميزات</td>
+          <td>4 مميزات: تسليم فوري، دفع آمن، وصول دائم، دعم فني</td>
+          <td><span class="badge badge-green">تلقائي</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>📦 أحدث المنتجات</td>
+          <td>يجلب آخر 8 منتجات أضفتها</td>
+          <td><span class="badge badge-green">تلقائي</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>🏆 الأكثر مبيعاً</td>
+          <td>المنتجات الأكثر مبيعاً في slider أنيق</td>
+          <td><span class="badge badge-green">تلقائي</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>🔥 عروض وتخفيضات</td>
+          <td>المنتجات التي عليها خصومات</td>
+          <td><span class="badge badge-green">تلقائي</span></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>💡 لماذا نختارنا</td>
+          <td>6 مميزات للمنتجات الرقمية في شبكة أنيقة</td>
+          <td><span class="badge badge-green">تلقائي</span></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>⭐ آراء العملاء</td>
+          <td>يجلب التقييمات من منصة سلة تلقائياً</td>
+          <td><span class="badge badge-blue">يحتاج تقييمات</span></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>🚀 بانر CTA</td>
+          <td>دعوة للشراء مع زر واتساب إذا أضفته</td>
+          <td><span class="badge badge-green">تلقائي</span></td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>🤝 شركاؤنا</td>
+          <td>يظهر إذا أضفت علامات تجارية في سلة</td>
+          <td><span class="badge badge-blue">اختياري</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 7. PRODUCTS -->
+  <section class="section" id="products">
+    <div class="section-header">
+      <div class="section-icon">🛍️</div>
+      <h2>إعداد المنتجات الرقمية</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>أضف منتجاً جديداً</h4>
+          <p>من لوحة التحكم ← المنتجات ← إضافة منتج جديد.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>اختر نوع المنتج "رقمي" أو "رموز"</h4>
+          <p>من حقل "نوع المنتج" اختار "رقمي" — سيظهر بانر التسليم الفوري تلقائياً على صفحة المنتج.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>ارفع الملف الرقمي</h4>
+          <p>في قسم "الملفات الرقمية" ارفع ملفك (PDF، ZIP، MP4، إلخ). يُرسل للعميل تلقائياً بعد الدفع.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>أضف صورة احترافية للمنتج</h4>
+          <p>صورة واضحة بأبعاد 800×800 أو أكبر. تظهر في كارد المنتج وصفحته.</p>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-info">
+      <span class="alert-icon">💡</span>
+      <div><strong>تلميح:</strong> المنتجات الرقمية لا تحتاج شحن. تأكد من إيقاف "يحتاج شحن" عند إضافة المنتج.</div>
+    </div>
+  </section>
+
+  <!-- 8. PAGES -->
+  <section class="section" id="pages">
+    <div class="section-header">
+      <div class="section-icon">📑</div>
+      <h2>الصفحات المتاحة</h2>
+    </div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🏠</div>
+        <h4>الصفحة الرئيسية</h4>
+        <p>9 أقسام كاملة للمنتجات الرقمية.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <h4>صفحة المنتج</h4>
+        <p>مع بانر التسليم الفوري و4 مميزات رقمية.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏷️</div>
+        <h4>صفحة المنتجات</h4>
+        <p>عرض كامل للمنتجات مع فلاتر وترتيب.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛒</div>
+        <h4>صفحة السلة</h4>
+        <p>سلة التسوق مع خيار الكوبون.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">👤</div>
+        <h4>الملف الشخصي</h4>
+        <p>طلبات المستخدم وتنزيل الملفات الرقمية.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📝</div>
+        <h4>المدونة</h4>
+        <p>لنشر محتوى ومقالات ذات صلة بمنتجاتك.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">❤️</div>
+        <h4>المفضلة</h4>
+        <p>قائمة المنتجات المحفوظة لكل مستخدم.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <h4>شكر على الطلب</h4>
+        <p>صفحة شكر بعد إتمام الشراء مع رابط التحميل.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. PRODUCT PAGE -->
+  <section class="section" id="product-page">
+    <div class="section-header">
+      <div class="section-icon">📦</div>
+      <h2>صفحة المنتج الرقمي</h2>
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <span class="fi-icon">⚡</span>
+        <div>
+          <h4>بانر "تسليم فوري"</h4>
+          <p>يظهر تلقائياً للمنتجات الرقمية والرموز مع رسالة "ستحصل على المنتج مباشرة بعد الدفع".</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="fi-icon">📥</span>
+        <div>
+          <h4>شبكة مميزات رقمية (4 مربعات)</h4>
+          <p>تظهر فوق زر الإضافة للسلة: تحميل فوري 📥 | دفع آمن 🔒 | وصول دائم ♾️ | دعم فني 🎧</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="fi-icon">⭐</span>
+        <div>
+          <h4>تقييمات العملاء</h4>
+          <p>تظهر تقييمات النجوم وعدد المراجعين تلقائياً من بيانات سلة.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="fi-icon">🔄</span>
+        <div>
+          <h4>منتجات مشابهة</h4>
+          <p>قسم في أسفل الصفحة يعرض منتجات مشابهة تلقائياً.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. FOOTER -->
+  <section class="section" id="footer">
+    <div class="section-header">
+      <div class="section-icon">🦶</div>
+      <h2>الفوتر</h2>
+    </div>
+    <p style="color:var(--muted); margin-bottom:16px;">الفوتر يتكون من 4 أعمدة وتُملأ تلقائياً من بيانات متجرك في سلة:</p>
+    <table>
+      <thead>
+        <tr><th>العمود</th><th>المحتوى</th><th>المصدر</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>العمود الأول</td>
+          <td>اسم المتجر، الوصف، شارات رقمية، السوشيال ميديا</td>
+          <td>إعدادات المتجر في سلة</td>
+        </tr>
+        <tr>
+          <td>العمود الثاني</td>
+          <td>روابط سريعة (قائمة الفوتر)</td>
+          <td>القوائم ← قائمة الفوتر</td>
+        </tr>
+        <tr>
+          <td>العمود الثالث</td>
+          <td>معلومات التواصل (إيميل، واتساب، سوشيال)</td>
+          <td>إعدادات المتجر ← التواصل</td>
+        </tr>
+        <tr>
+          <td>العمود الرابع</td>
+          <td>روابط تحميل تطبيق الجوال</td>
+          <td>إعدادات ← التطبيق</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 11. FAQ -->
+  <section class="section" id="faq">
+    <div class="section-header">
+      <div class="section-icon">❓</div>
+      <h2>أسئلة شائعة</h2>
+    </div>
+    <div>
+      <div class="faq-item open">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          هل يعمل الثيم مع جميع أنواع المنتجات؟
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">نعم، يعمل مع جميع أنواع منتجات سلة. لكنه متخصص ومحسّن للمنتجات الرقمية والرموز حيث تظهر مميزات إضافية تلقائياً.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          كيف أضيف واتساب في صفحة التواصل؟
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">من لوحة تحكم سلة ← الإعدادات ← معلومات التواصل ← أضف رقم واتساب. سيظهر تلقائياً في الهيدر والفوتر وزر CTA.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          هل يمكنني تغيير النصوص في الصفحة الرئيسية؟
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">نعم، من محرر الثيم في سلة يمكنك تعديل معظم النصوص. بعض النصوص مثل Hero تحتاج تعديل في ملف index.twig مباشرة.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          لماذا لا تظهر آراء العملاء؟
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">آراء العملاء تظهر فقط بعد حصولك على تقييمات فعلية من عملائك. تأكد أن "التقييمات" مفعّلة في إعدادات المتجر.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          هل الثيم يدعم اللغة الإنجليزية؟
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">نعم، سلة تدعم تعدد اللغات وعند تفعيل الإنجليزية يتحول الثيم تلقائياً للعرض من اليسار لليمين (LTR).</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          كيف أخفي قسم "شركاؤنا" إذا ما عندي علامات تجارية؟
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">القسم يختفي تلقائياً إذا لم تضف أي علامات تجارية في سلة. لا تحتاج أي إعداد إضافي.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. SUPPORT -->
+  <section class="section" id="support">
+    <div class="section-header">
+      <div class="section-icon">🎧</div>
+      <h2>الدعم والتواصل</h2>
+    </div>
+    <div class="cards-grid">
+      <div class="card" style="border-color:#25D366;">
+        <div class="card-icon">💬</div>
+        <h4>واتساب</h4>
+        <p>تواصل مباشرة عبر واتساب للدعم الفوري. الرد خلال ساعات العمل.</p>
+      </div>
+      <div class="card" style="border-color:#1DA1F2;">
+        <div class="card-icon">🐦</div>
+        <h4>تويتر</h4>
+        <p>تابعنا على تويتر للتحديثات والتلميحات الجديدة عن الثيم.</p>
+      </div>
+      <div class="card" style="border-color:#6448E8;">
+        <div class="card-icon">📧</div>
+        <h4>البريد الإلكتروني</h4>
+        <p>للاستفسارات التقنية والمشاكل المعقدة. الرد خلال 24 ساعة.</p>
+      </div>
+      <div class="card" style="border-color:#F59E0B;">
+        <div class="card-icon">📖</div>
+        <h4>توثيق سلة</h4>
+        <p>لأي أسئلة عن منصة سلة نفسها: <strong>docs.salla.dev</strong></p>
+      </div>
+    </div>
+    <div class="alert alert-success" style="margin-top:24px;">
+      <span class="alert-icon">🎉</span>
+      <div><strong>شكراً لاختيارك ثيم ديمو!</strong> نأمل أن يساعدك في بناء متجر رقمي احترافي وناجح. لأي استفسار نحن هنا دائماً. 💜</div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+  // Highlight active nav item on scroll
+  const sections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('.sidebar nav a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  });
+
+  // Print
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'p') window.print();
+  });
+</script>
+
+</body>
+</html>
