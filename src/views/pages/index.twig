@@ -1,14 +1,275 @@
-{#
-| Variable         | Type       | Description                                                         |
-|------------------|------------|---------------------------------------------------------------------|
-| page             | object     |                                                                     |
-| page.title       | string     | *could be html                                                      |
-| page.slug        | string     | ex: "cat.show"                                                      |
-#}
 {% extends "layouts.master" %}
-{% block content %}
-    {% component home %}
+
+{% block styles %}
+<style>
+/* ==========================================  HERO  ========================================== */
+.demo-hero {
+    background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-page) 100%);
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border-color);
+    position: relative; overflow: hidden;
+}
+.demo-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 60% -10%, rgba(100,72,232,0.12) 0%, transparent 65%);
+    pointer-events: none;
+}
+.demo-hero .container { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.demo-hero__badge {
+    display: inline-block; background: var(--badge-digital-bg); color: var(--badge-digital-text);
+    font-size: 13px; font-weight: 700; padding: 6px 18px; border-radius: 20px;
+    border: 1px solid var(--color-primary); margin-bottom: 20px;
+}
+.demo-hero__title { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: var(--text-primary); line-height: 1.25; margin-bottom: 16px; }
+.demo-hero__title span { color: var(--color-primary); }
+.demo-hero__desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 32px; max-width: 480px; }
+.demo-hero__actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.demo-hero__visual { position: relative; display: flex; align-items: center; justify-content: center; min-height: 260px; }
+.demo-hero__glow { width: 280px; height: 280px; background: radial-gradient(circle, rgba(100,72,232,0.2) 0%, transparent 70%); border-radius: 50%; position: absolute; }
+.demo-hero__cards { display: flex; flex-direction: column; gap: 14px; position: relative; z-index: 1; }
+.demo-hero__card {
+    background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px;
+    padding: 16px 28px; font-size: 15px; font-weight: 700; color: var(--text-primary);
+    box-shadow: var(--card-shadow); transition: transform 0.3s ease;
+}
+.demo-hero__card:hover { transform: translateX(-6px); }
+
+/* BUTTONS */
+.demo-btn { display: inline-block; padding: 13px 30px; border-radius: 12px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.25s ease; cursor: pointer; border: 2px solid transparent; }
+.demo-btn--primary { background: var(--color-primary); color: #fff; box-shadow: 0 6px 20px rgba(100,72,232,0.3); }
+.demo-btn--primary:hover { background: var(--color-primary-dark); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(100,72,232,0.4); }
+.demo-btn--outline { background: transparent; color: var(--color-primary); border-color: var(--color-primary); }
+.demo-btn--outline:hover { background: var(--bg-overlay); }
+.demo-btn--white { background: #fff; color: var(--color-primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.demo-btn--white:hover { transform: translateY(-2px); }
+.demo-btn--outline-white { background: transparent; color: #fff; border-color: rgba(255,255,255,0.5); }
+.demo-btn--outline-white:hover { background: rgba(255,255,255,0.1); }
+
+/* FEATURES BAR */
+.demo-features { background: var(--bg-surface); border-bottom: 1px solid var(--border-color); }
+.demo-features__grid { display: grid; grid-template-columns: repeat(4,1fr); }
+.demo-feature { display: flex; align-items: center; gap: 14px; padding: 24px 20px; border-left: 1px solid var(--border-color); transition: background 0.2s; }
+.demo-feature:first-child { border-right: 1px solid var(--border-color); }
+.demo-feature:hover { background: var(--bg-overlay); }
+.demo-feature__icon { font-size: 28px; flex-shrink: 0; }
+.demo-feature strong { display: block; color: var(--text-primary); font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.demo-feature span { color: var(--text-muted); font-size: 12px; }
+
+/* SECTIONS */
+.demo-section { padding: 56px 0; background: var(--bg-page); }
+.demo-section--alt { background: var(--bg-surface); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+.demo-section__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+.demo-section__title { font-size: 22px; font-weight: 800; color: var(--text-primary); position: relative; padding-bottom: 10px; }
+.demo-section__title::after { content: ''; position: absolute; bottom: 0; right: 0; width: 44px; height: 3px; background: linear-gradient(90deg, var(--color-primary), var(--color-accent)); border-radius: 2px; }
+.demo-see-all { color: var(--color-primary); font-size: 14px; font-weight: 600; text-decoration: none; }
+.demo-see-all:hover { opacity: 0.75; }
+
+/* WHY DIGITAL */
+.demo-why { padding: 56px 0; background: var(--bg-page); }
+.demo-why__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.demo-why__card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 28px 24px; text-align: center; box-shadow: var(--card-shadow); transition: all 0.3s ease; }
+.demo-why__card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); border-color: var(--border-hover); }
+.demo-why__icon { font-size: 36px; margin-bottom: 14px; }
+.demo-why__card h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+.demo-why__card p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+/* CTA */
+.demo-cta { padding: 56px 0; background: var(--bg-page); }
+.demo-cta__inner {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #4F35CC 100%);
+    border-radius: 20px; padding: 48px 40px; display: flex;
+    justify-content: space-between; align-items: center; gap: 32px;
+    box-shadow: 0 16px 48px rgba(100,72,232,0.3); flex-wrap: wrap;
+}
+.demo-cta__inner h2 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+.demo-cta__inner p { color: rgba(255,255,255,0.8); font-size: 15px; }
+.demo-cta__actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .demo-hero .container { grid-template-columns: 1fr; text-align: center; }
+    .demo-hero__visual { display: none; }
+    .demo-hero__actions { justify-content: center; }
+    .demo-why__grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 768px) {
+    .demo-features__grid { grid-template-columns: repeat(2,1fr); }
+    .demo-why__grid { grid-template-columns: 1fr; }
+    .demo-cta__inner { flex-direction: column; text-align: center; }
+    .demo-section__title { font-size: 18px; }
+    .demo-hero { padding: 48px 0 40px; }
+}
+</style>
 {% endblock %}
+
+{% block content %}
+
+{# 1. HERO #}
+<section class="demo-hero">
+    <div class="container">
+        <div class="demo-hero__content">
+            <span class="demo-hero__badge">⚡ أفضل منتجات رقمية في السوق</span>
+            <h1 class="demo-hero__title">
+                {{ store.name }}<br>
+                <span>للمنتجات الرقمية</span>
+            </h1>
+            <p class="demo-hero__desc">
+                كورسات احترافية، قوالب جاهزة، وبرامج متخصصة — كل ما تحتاجه في مكان واحد بتسليم فوري.
+            </p>
+            <div class="demo-hero__actions">
+                <a href="{{ link('products') }}" class="demo-btn demo-btn--primary">🛒 تصفح المنتجات</a>
+                <a href="#why-digital" class="demo-btn demo-btn--outline">تعرّف علينا</a>
+            </div>
+        </div>
+        <div class="demo-hero__visual" aria-hidden="true">
+            <div class="demo-hero__glow"></div>
+            <div class="demo-hero__cards">
+                <div class="demo-hero__card">📥 تحميل فوري بعد الدفع</div>
+                <div class="demo-hero__card">🔒 بوابات دفع آمنة 100%</div>
+                <div class="demo-hero__card">♾️ وصول دائم للملفات</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# 2. FEATURES BAR #}
+<section class="demo-features">
+    <div class="container">
+        <div class="demo-features__grid">
+            <div class="demo-feature">
+                <span class="demo-feature__icon">⚡</span>
+                <div><strong>تسليم فوري</strong><span>تحصل على المنتج مباشرة بعد الدفع</span></div>
+            </div>
+            <div class="demo-feature">
+                <span class="demo-feature__icon">🔒</span>
+                <div><strong>دفع آمن 100%</strong><span>بوابات دفع موثوقة ومعتمدة</span></div>
+            </div>
+            <div class="demo-feature">
+                <span class="demo-feature__icon">♾️</span>
+                <div><strong>وصول دائم</strong><span>ملفاتك متاحة في أي وقت</span></div>
+            </div>
+            <div class="demo-feature">
+                <span class="demo-feature__icon">🎧</span>
+                <div><strong>دعم فني</strong><span>فريق جاهز لمساعدتك دائماً</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# 3. LATEST PRODUCTS #}
+<section class="demo-section">
+    <div class="container">
+        <div class="demo-section__header">
+            <h2 class="demo-section__title">أحدث المنتجات</h2>
+            <a href="{{ link('products') }}" class="demo-see-all">عرض الكل ←</a>
+        </div>
+        <salla-products-list source="latest" display-as="grid" limit="8"></salla-products-list>
+    </div>
+</section>
+
+{# 4. BEST SELLERS #}
+<section class="demo-section demo-section--alt">
+    <div class="container">
+        <div class="demo-section__header">
+            <h2 class="demo-section__title">🏆 الأكثر مبيعاً</h2>
+            <a href="{{ link('products') }}" class="demo-see-all">عرض الكل ←</a>
+        </div>
+        <salla-products-slider source="most_sales" limit="8" autoplay block-title=""></salla-products-slider>
+    </div>
+</section>
+
+{# 5. SALE PRODUCTS #}
+<section class="demo-section">
+    <div class="container">
+        <div class="demo-section__header">
+            <h2 class="demo-section__title">🔥 عروض وتخفيضات</h2>
+            <a href="{{ link('products') }}" class="demo-see-all">عرض الكل ←</a>
+        </div>
+        <salla-products-slider source="sale" limit="8" autoplay block-title=""></salla-products-slider>
+    </div>
+</section>
+
+{# 6. WHY DIGITAL #}
+<section class="demo-why demo-section--alt" id="why-digital">
+    <div class="container">
+        <div class="demo-section__header" style="justify-content:center; margin-bottom:40px;">
+            <h2 class="demo-section__title">لماذا تختار منتجاتنا الرقمية؟</h2>
+        </div>
+        <div class="demo-why__grid">
+            <div class="demo-why__card">
+                <div class="demo-why__icon">📥</div>
+                <h3>تحميل فوري</h3>
+                <p>لا انتظار ولا شحن — ملفك جاهز للتحميل فور إتمام الدفع</p>
+            </div>
+            <div class="demo-why__card">
+                <div class="demo-why__icon">💎</div>
+                <h3>جودة عالية</h3>
+                <p>كل منتج خضع لمراجعة دقيقة لضمان أفضل تجربة للمستخدم</p>
+            </div>
+            <div class="demo-why__card">
+                <div class="demo-why__icon">🔄</div>
+                <h3>تحديثات مجانية</h3>
+                <p>تحصل على كل التحديثات المستقبلية للمنتج بدون رسوم إضافية</p>
+            </div>
+            <div class="demo-why__card">
+                <div class="demo-why__icon">🌍</div>
+                <h3>متاح 24/7</h3>
+                <p>تقدر تشتري وتحمّل في أي وقت من أي مكان حول العالم</p>
+            </div>
+            <div class="demo-why__card">
+                <div class="demo-why__icon">🎓</div>
+                <h3>محتوى تعليمي</h3>
+                <p>مواد تعليمية مصممة لتطوير مهاراتك بشكل فعلي ومباشر</p>
+            </div>
+            <div class="demo-why__card">
+                <div class="demo-why__icon">🤝</div>
+                <h3>ضمان الرضا</h3>
+                <p>غير راضٍ؟ تواصل معنا وسنحل مشكلتك فوراً</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# 7. TESTIMONIALS #}
+<section class="demo-section">
+    <div class="container">
+        <div class="demo-section__header">
+            <h2 class="demo-section__title">⭐ آراء عملائنا</h2>
+        </div>
+        <salla-reviews limit="6" sort="highest_rating" type="store" display-all-link></salla-reviews>
+    </div>
+</section>
+
+{# 8. CTA BANNER #}
+<section class="demo-cta">
+    <div class="container">
+        <div class="demo-cta__inner">
+            <div>
+                <h2>ابدأ رحلتك الرقمية اليوم 🚀</h2>
+                <p>انضم لآلاف العملاء الذين يثقون في منتجاتنا الرقمية</p>
+            </div>
+            <div class="demo-cta__actions">
+                <a href="{{ link('products') }}" class="demo-btn demo-btn--white">🛒 تصفح المنتجات</a>
+                {% if store.contacts.whatsapp %}
+                <a href="https://wa.me/{{ store.contacts.whatsapp }}" class="demo-btn demo-btn--outline-white" target="_blank">💬 تواصل معنا</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{# 9. BRANDS #}
+<section class="demo-section demo-section--alt">
+    <div class="container">
+        <div class="demo-section__header">
+            <h2 class="demo-section__title">شركاؤنا</h2>
+        </div>
+        <salla-brands></salla-brands>
+    </div>
+</section>
+
+{% endblock %}
+
 {% block scripts %}
     <script defer src="{{ 'home.js' | asset }}"></script>
 {% endblock %}
