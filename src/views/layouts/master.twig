@@ -81,7 +81,7 @@
     <link rel="stylesheet" href="{{ 'app.css' | asset }}">
     <link rel="stylesheet" href="{{ theme.font.path|cdn }}"/>
     <link rel="stylesheet" href="{{ 'fonts/sallaicons.css'|cdn }}"/>
-    
+
     <style>
         :root {
             --font-main: '{{theme.font.name}}';
@@ -93,6 +93,15 @@
     </style>
     {# tracking services, custom css feature. #}
     {% hook 'head:end' %}
+
+    {# ---- Dark/Light Mode Script (runs before paint to avoid flash) ---- #}
+    <script>
+        (function() {
+            var saved = localStorage.getItem('demo-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            if (saved === 'dark') document.documentElement.classList.add('dark-mode');
+        })();
+    </script>
 </head>
 <body id="app" class="theme-raed overflow-x-hidden {% hook 'body:classes' %}
   {{ theme.settings.get('footer_is_dark') ? ' footer-is-dark' : ' footer-is-light' }}
@@ -117,6 +126,18 @@
     <salla-add-product-toast></salla-add-product-toast>
 {% endif %}
 <script defer crossorigin="anonymous" src="{{ 'app.js' | asset }}"></script>
+
+{# ---- Dark/Light Mode Toggle Logic ---- #}
+<script>
+    function toggleTheme() {
+        var html = document.documentElement;
+        var current = html.getAttribute('data-theme') || 'light';
+        var next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        html.classList.toggle('dark-mode', next === 'dark');
+        localStorage.setItem('demo-theme', next);
+    }
+</script>
 
 {# Twilight Components #}
 <salla-offer-modal></salla-offer-modal>

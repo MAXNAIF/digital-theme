@@ -195,7 +195,18 @@
                     </div>
                 {% endif %}
 
-                <h1 class="text-xl md:text-2xl leading-10 font-bold mb-6 text-gray-800">{{ product.name }}</h1>
+                {# Digital Product Notice #}
+                {% if product.type == 'digital' or product.type == 'codes' %}
+                <div style="display:flex; align-items:center; gap:10px; background:var(--badge-digital-bg); border:1px solid var(--color-primary); border-radius:12px; padding:12px 18px; margin-bottom:16px;">
+                    <span style="font-size:20px;">⚡</span>
+                    <div>
+                        <span style="color:var(--badge-digital-text); font-weight:700; font-size:14px;">منتج رقمي — تسليم فوري</span>
+                        <p style="color:var(--text-muted); font-size:12px; margin:0;">ستحصل على المنتج مباشرة بعد إتمام الدفع</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <h1 class="text-xl md:text-2xl leading-10 font-bold mb-6" style="color:var(--text-primary);">{{ product.name }}</h1>
 
                 {% if product.subtitle %}
                     <h2 class="product-entry__sub-title text-sm text-gray-500 leading-6 mb-2.5">
@@ -342,7 +353,29 @@
 
                     {% hook 'product:single.form.end' %}
 
-                    <section class="flex bg-white p-5 sm:pb-0 rounded-md rounded-b-none">
+                    {# Digital Features List #}
+                    {% if product.type == 'digital' or product.type == 'codes' %}
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
+                        <div style="display:flex; align-items:center; gap:8px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px;">
+                            <span style="font-size:18px;">📥</span>
+                            <span style="font-size:13px; color:var(--text-secondary); font-weight:600;">تحميل فوري</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px;">
+                            <span style="font-size:18px;">🔒</span>
+                            <span style="font-size:13px; color:var(--text-secondary); font-weight:600;">دفع آمن</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px;">
+                            <span style="font-size:18px;">♾️</span>
+                            <span style="font-size:13px; color:var(--text-secondary); font-weight:600;">وصول دائم</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:10px 14px;">
+                            <span style="font-size:18px;">🎧</span>
+                            <span style="font-size:13px; color:var(--text-secondary); font-weight:600;">دعم فني</span>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <section class="flex p-5 sm:pb-0 rounded-md rounded-b-none" style="background:var(--bg-card)">
                         <div class="center-between w-full">
                             <label class="form-label">
                                 <b class="block">
@@ -373,7 +406,7 @@
                         </section>
                     {% endif %}
 
-                    <section class="sticky-product-bar bg-white p-5 rounded-md rounded-b-none">
+                    <section class="sticky-product-bar p-5 rounded-md rounded-b-none" style="background:var(--bg-card);">
                         {# Quantity #}
                         {% if product.is_hidden_quantity or product.type == 'booking' %}
                             <input type="hidden" value="1" name="quantity" aria-label="Quantity"/>

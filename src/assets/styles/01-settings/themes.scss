@@ -1,0 +1,126 @@
+// ============================================
+//  ديمو - Digital Store Theme
+//  Dark & Light Mode Variables
+// ============================================
+
+// ---- LIGHT MODE (default) ----
+:root,
+[data-theme="light"] {
+  // Primary Colors
+  --color-primary:        #6448E8;   // بنفسجي عميق أنيق
+  --color-primary-dark:   #4F35CC;
+  --color-primary-light:  #8B72F0;
+  --color-accent:         #0EA5E9;   // أزرق سماوي
+
+  // Backgrounds
+  --bg-page:              #F5F6FF;
+  --bg-surface:           #FFFFFF;
+  --bg-card:              #FFFFFF;
+  --bg-card-hover:        #F0EEFF;
+  --bg-overlay:           rgba(100, 72, 232, 0.06);
+
+  // Text
+  --text-primary:         #1E1B4B;
+  --text-secondary:       #4B5563;
+  --text-muted:           #9CA3AF;
+  --text-on-primary:      #FFFFFF;
+
+  // Borders
+  --border-color:         #E5E7EB;
+  --border-hover:         #C4B5FD;
+
+  // Header
+  --header-bg:            #FFFFFF;
+  --header-shadow:        0 2px 20px rgba(100, 72, 232, 0.08);
+  --topnav-bg:            #6448E8;
+  --topnav-text:          #FFFFFF;
+
+  // Footer
+  --footer-bg:            #1E1B4B;
+  --footer-text:          #C4B5FD;
+  --footer-text-muted:    #8B8FA8;
+
+  // Cards
+  --card-shadow:          0 4px 24px rgba(100, 72, 232, 0.08);
+  --card-shadow-hover:    0 8px 32px rgba(100, 72, 232, 0.18);
+  --card-radius:          16px;
+
+  // Buttons
+  --btn-primary-bg:       #6448E8;
+  --btn-primary-text:     #FFFFFF;
+  --btn-primary-hover:    #4F35CC;
+
+  // Badge / Tag
+  --badge-digital-bg:     #EEF2FF;
+  --badge-digital-text:   #6448E8;
+
+  // Inputs
+  --input-bg:             #F9FAFB;
+  --input-border:         #E5E7EB;
+  --input-focus:          #6448E8;
+
+  // Scrollbar
+  --scrollbar-thumb:      #C4B5FD;
+  --scrollbar-track:      #F5F6FF;
+}
+
+// ---- DARK MODE ----
+[data-theme="dark"],
+.dark-mode {
+  // Primary Colors
+  --color-primary:        #8B72F0;   // بنفسجي أفتح على الداكن
+  --color-primary-dark:   #6448E8;
+  --color-primary-light:  #A89AF5;
+  --color-accent:         #22D3EE;   // سيان كهربائي
+
+  // Backgrounds
+  --bg-page:              #0A0B14;
+  --bg-surface:           #13142A;
+  --bg-card:              #1C1E35;
+  --bg-card-hover:        #23264A;
+  --bg-overlay:           rgba(139, 114, 240, 0.08);
+
+  // Text
+  --text-primary:         #E2E8FF;
+  --text-secondary:       #A8B2D8;
+  --text-muted:           #64748B;
+  --text-on-primary:      #FFFFFF;
+
+  // Borders
+  --border-color:         #2D3056;
+  --border-hover:         #6448E8;
+
+  // Header
+  --header-bg:            #13142A;
+  --header-shadow:        0 2px 20px rgba(0, 0, 0, 0.4);
+  --topnav-bg:            #0A0B14;
+  --topnav-text:          #A8B2D8;
+
+  // Footer
+  --footer-bg:            #070810;
+  --footer-text:          #A8B2D8;
+  --footer-text-muted:    #4B5563;
+
+  // Cards
+  --card-shadow:          0 4px 24px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover:    0 8px 40px rgba(139, 114, 240, 0.2);
+  --card-radius:          16px;
+
+  // Buttons
+  --btn-primary-bg:       #6448E8;
+  --btn-primary-text:     #FFFFFF;
+  --btn-primary-hover:    #8B72F0;
+
+  // Badge / Tag
+  --badge-digital-bg:     rgba(139, 114, 240, 0.15);
+  --badge-digital-text:   #A89AF5;
+
+  // Inputs
+  --input-bg:             #13142A;
+  --input-border:         #2D3056;
+  --input-focus:          #8B72F0;
+
+  // Scrollbar
+  --scrollbar-thumb:      #2D3056;
+  --scrollbar-track:      #13142A;
+}

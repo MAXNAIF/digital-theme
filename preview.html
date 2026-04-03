@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ديمو — معاينة الثيم</title>
+<style>
+  /* ========== LIGHT MODE ========== */
+  :root, [data-theme="light"] {
+    --color-primary:      #6448E8;
+    --color-primary-dark: #4F35CC;
+    --color-accent:       #0EA5E9;
+    --bg-page:            #F5F6FF;
+    --bg-surface:         #FFFFFF;
+    --bg-card:            #FFFFFF;
+    --bg-card-hover:      #F0EEFF;
+    --bg-overlay:         rgba(100,72,232,0.06);
+    --text-primary:       #1E1B4B;
+    --text-secondary:     #4B5563;
+    --text-muted:         #9CA3AF;
+    --border-color:       #E5E7EB;
+    --border-hover:       #C4B5FD;
+    --header-bg:          #FFFFFF;
+    --topnav-bg:          #6448E8;
+    --topnav-text:        #FFFFFF;
+    --footer-bg:          #1E1B4B;
+    --footer-text:        #C4B5FD;
+    --footer-muted:       #8B8FA8;
+    --card-shadow:        0 4px 24px rgba(100,72,232,0.08);
+    --card-shadow-hover:  0 8px 32px rgba(100,72,232,0.18);
+    --badge-bg:           #EEF2FF;
+    --badge-text:         #6448E8;
+  }
+
+  /* ========== DARK MODE ========== */
+  [data-theme="dark"] {
+    --color-primary:      #8B72F0;
+    --color-primary-dark: #6448E8;
+    --color-accent:       #22D3EE;
+    --bg-page:            #0A0B14;
+    --bg-surface:         #13142A;
+    --bg-card:            #1C1E35;
+    --bg-card-hover:      #23264A;
+    --bg-overlay:         rgba(139,114,240,0.08);
+    --text-primary:       #E2E8FF;
+    --text-secondary:     #A8B2D8;
+    --text-muted:         #64748B;
+    --border-color:       #2D3056;
+    --border-hover:       #6448E8;
+    --header-bg:          #13142A;
+    --topnav-bg:          #070810;
+    --topnav-text:        #A8B2D8;
+    --footer-bg:          #070810;
+    --footer-text:        #A8B2D8;
+    --footer-muted:       #4B5563;
+    --card-shadow:        0 4px 24px rgba(0,0,0,0.3);
+    --card-shadow-hover:  0 8px 40px rgba(139,114,240,0.2);
+    --badge-bg:           rgba(139,114,240,0.15);
+    --badge-text:         #A89AF5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    direction: rtl;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-page); }
+  ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
+
+  /* === TOP NAV === */
+  .topnav {
+    background: var(--topnav-bg);
+    color: var(--topnav-text);
+    padding: 8px 0;
+    font-size: 13px;
+  }
+  .topnav .inner { max-width:1200px; margin:auto; padding:0 24px; display:flex; justify-content:space-between; align-items:center; }
+
+  /* === HEADER === */
+  header {
+    background: var(--header-bg);
+    box-shadow: 0 2px 20px rgba(100,72,232,0.08);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky; top: 0; z-index: 1000;
+    transition: all 0.3s ease;
+  }
+  .header-inner { max-width:1200px; margin:auto; padding:14px 24px; display:flex; justify-content:space-between; align-items:center; }
+  .logo { font-size: 26px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; text-decoration:none; }
+  .logo span { color: var(--color-primary); }
+  nav a { color: var(--text-secondary); text-decoration: none; margin: 0 16px; font-size:14px; font-weight:500; transition: color 0.2s; }
+  nav a:hover { color: var(--color-primary); }
+  .header-actions { display:flex; align-items:center; gap:12px; }
+
+  /* Theme Toggle */
+  .theme-toggle {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1.5px solid var(--border-color);
+    background: var(--bg-overlay);
+    cursor: pointer; display:flex; align-items:center; justify-content:center;
+    transition: all 0.3s ease; color: var(--text-primary);
+    font-size: 18px;
+  }
+  .theme-toggle:hover { border-color: var(--color-primary); transform: rotate(20deg); background: var(--bg-card-hover); }
+
+  .header-icon {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1.5px solid var(--border-color);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; color: var(--text-secondary);
+    transition: all 0.2s; font-size:18px;
+    text-decoration:none;
+  }
+  .header-icon:hover { color: var(--color-primary); border-color: var(--color-primary); }
+
+  /* === HERO === */
+  .hero {
+    background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-page) 100%);
+    padding: 80px 24px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% -20%, rgba(100,72,232,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--badge-bg); color: var(--badge-text);
+    font-size: 13px; font-weight: 700;
+    padding: 6px 18px; border-radius: 20px;
+    border: 1px solid var(--color-primary);
+    margin-bottom: 20px;
+  }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; color: var(--text-primary); line-height: 1.2; margin-bottom: 16px; }
+  .hero h1 span { color: var(--color-primary); }
+  .hero p { font-size: 17px; color: var(--text-secondary); max-width: 520px; margin: 0 auto 32px; line-height: 1.8; }
+  .btn-primary {
+    background: var(--color-primary); color: #fff;
+    padding: 14px 36px; border-radius: 14px;
+    border: none; cursor: pointer; font-size: 16px; font-weight: 700;
+    box-shadow: 0 6px 20px rgba(100,72,232,0.35);
+    transition: all 0.25s ease; text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--color-primary-dark); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(100,72,232,0.45); }
+  .btn-outline {
+    background: transparent; color: var(--color-primary);
+    padding: 14px 36px; border-radius: 14px;
+    border: 2px solid var(--color-primary); cursor: pointer; font-size: 16px; font-weight: 700;
+    transition: all 0.25s ease; text-decoration: none; display: inline-block; margin-right: 12px;
+  }
+  .btn-outline:hover { background: var(--bg-overlay); }
+
+  /* Features Bar */
+  .features-bar {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0;
+  }
+  .features-inner { max-width:1200px; margin:auto; display:grid; grid-template-columns: repeat(4, 1fr); }
+  .feature-item {
+    padding: 24px 20px; text-align:center;
+    border-left: 1px solid var(--border-color);
+    display: flex; align-items:center; gap:12px;
+  }
+  .feature-item:last-child { border-left: none; }
+  .feature-icon { font-size: 28px; }
+  .feature-text strong { display:block; color: var(--text-primary); font-size:14px; font-weight:700; }
+  .feature-text span { color: var(--text-muted); font-size:12px; }
+
+  /* === PRODUCTS SECTION === */
+  .section { padding: 60px 24px; }
+  .section-inner { max-width:1200px; margin:auto; }
+  .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; }
+  .section-title {
+    font-size: 22px; font-weight: 800; color: var(--text-primary);
+    position: relative; padding-bottom: 10px;
+  }
+  .section-title::after {
+    content:''; position:absolute; bottom:0; right:0;
+    width:44px; height:3px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    border-radius: 2px;
+  }
+  .see-all { color: var(--color-primary); font-size:14px; font-weight:600; text-decoration:none; }
+  .see-all:hover { text-decoration:underline; }
+
+  /* Products Grid */
+  .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+
+  /* Product Card */
+  .product-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+    cursor: pointer;
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-shadow-hover);
+    border-color: var(--border-hover);
+  }
+  .product-badge {
+    position: absolute; top:12px; right:12px; z-index:2;
+    background: var(--badge-bg); color: var(--badge-text);
+    font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px;
+    border: 1px solid var(--color-primary);
+  }
+  .discount-badge {
+    position: absolute; top:12px; left:12px; z-index:2;
+    background: #EF4444; color: #fff;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px;
+  }
+  .product-image {
+    width: 100%; aspect-ratio: 4/3;
+    background: linear-gradient(135deg, var(--bg-page) 0%, var(--bg-card-hover) 100%);
+    display: flex; align-items:center; justify-content:center;
+    font-size: 60px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .product-info { padding: 16px; }
+  .product-category { font-size: 11px; color: var(--color-primary); font-weight: 600; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .product-name { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; line-height: 1.4; }
+  .product-rating { display:flex; align-items:center; gap:4px; margin-bottom:10px; }
+  .stars { color: #F59E0B; font-size: 13px; }
+  .rating-count { color: var(--text-muted); font-size: 12px; }
+  .product-footer { display:flex; justify-content:space-between; align-items:center; }
+  .product-price { font-size: 18px; font-weight: 800; color: var(--color-primary); }
+  .product-old-price { font-size: 13px; color: var(--text-muted); text-decoration: line-through; margin-right: 6px; }
+  .add-btn {
+    background: var(--color-primary); color: #fff;
+    border: none; border-radius: 10px; padding: 8px 16px;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .add-btn:hover { background: var(--color-primary-dark); transform: translateY(-1px); }
+
+  /* === PRODUCT PAGE PREVIEW === */
+  .product-page-preview {
+    background: var(--bg-page);
+    padding: 40px 24px;
+    border-top: 1px solid var(--border-color);
+  }
+  .product-page-inner { max-width:1200px; margin:auto; display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start; }
+  .product-img-main {
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 20px; aspect-ratio: 1;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 100px; box-shadow: var(--card-shadow);
+  }
+  .product-page-info { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 20px; padding: 32px; box-shadow: var(--card-shadow); }
+  .digital-notice {
+    display:flex; align-items:center; gap:12px;
+    background: var(--badge-bg); border: 1px solid var(--color-primary);
+    border-radius: 12px; padding: 14px 18px; margin-bottom: 20px;
+  }
+  .digital-notice-icon { font-size: 22px; }
+  .digital-notice-text strong { display:block; color: var(--badge-text); font-size: 14px; font-weight: 700; }
+  .digital-notice-text span { color: var(--text-muted); font-size: 12px; }
+  .product-page-title { font-size: 22px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
+  .product-page-price { font-size: 28px; font-weight: 800; color: var(--color-primary); margin: 16px 0; }
+  .digital-features { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin: 20px 0; }
+  .df-item {
+    display:flex; align-items:center; gap:8px;
+    background: var(--bg-card); border: 1px solid var(--border-color);
+    border-radius: 10px; padding: 10px 14px;
+  }
+  .df-item span:first-child { font-size: 18px; }
+  .df-item span:last-child { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+  .buy-btn {
+    width:100%; background: var(--color-primary); color: #fff;
+    padding: 16px; border: none; border-radius: 14px;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 6px 20px rgba(100,72,232,0.3);
+    transition: all 0.25s; margin-top: 16px;
+  }
+  .buy-btn:hover { background: var(--color-primary-dark); transform: translateY(-1px); }
+
+  /* === FOOTER === */
+  footer {
+    background: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 56px 24px 0;
+  }
+  .footer-inner { max-width:1200px; margin:auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; padding-bottom:40px; }
+  .footer-logo { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 14px; }
+  .footer-logo span { color: var(--color-primary); }
+  .footer-desc { color: var(--footer-text); font-size: 14px; line-height: 1.8; margin-bottom: 20px; max-width: 240px; }
+  .footer-badges { display:flex; gap:8px; flex-wrap:wrap; }
+  .footer-badge {
+    background: rgba(139,114,240,0.12); border: 1px solid var(--color-primary);
+    color: var(--color-primary); padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+  }
+  .footer-col h4 { color: #fff; font-weight: 700; font-size: 15px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .footer-col a { display:block; color: var(--footer-text); text-decoration:none; font-size:14px; margin-bottom:10px; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--color-primary); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 16px 0; text-align:center;
+    color: var(--footer-muted); font-size: 13px;
+    max-width:1200px; margin:auto;
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .features-inner { grid-template-columns: 1fr 1fr; }
+    .footer-inner { grid-template-columns: 1fr; }
+    .product-page-inner { grid-template-columns: 1fr; }
+    nav { display: none; }
+  }
+
+  /* Preview Controls */
+  .preview-label {
+    text-align: center; padding: 14px;
+    background: var(--bg-surface); border-bottom: 1px solid var(--border-color);
+    font-size: 13px; color: var(--text-muted);
+  }
+  .preview-label strong { color: var(--color-primary); }
+</style>
+</head>
+<body>
+
+<script>
+  // Anti-flash: set theme from localStorage before paint
+  (function(){
+    var t = localStorage.getItem('demo-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+
+<!-- Preview Label -->
+<div class="preview-label">
+  معاينة ثيم <strong>ديمو</strong> — اضغط على زر القمر/الشمس لتبديل الوضع
+</div>
+
+<!-- Top Nav -->
+<div class="topnav">
+  <div class="inner">
+    <span>📦 جميع المنتجات رقمية وتسليم فوري</span>
+    <span>دعم فني 24/7 | info@demo.sa</span>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">دي<span>مو</span></a>
+    <nav>
+      <a href="#">الرئيسية</a>
+      <a href="#">المنتجات</a>
+      <a href="#">الكورسات</a>
+      <a href="#">القوالب</a>
+      <a href="#">تواصل معنا</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="تبديل الوضع">
+        <span id="themeIcon">🌙</span>
+      </button>
+      <a href="#" class="header-icon" title="حسابي">👤</a>
+      <a href="#" class="header-icon" title="السلة">🛒</a>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">⚡ أفضل منتجات رقمية في السوق</div>
+  <h1>متجرك الأول<br>للمنتجات <span>الرقمية</span></h1>
+  <p>كورسات احترافية، قوالب جاهزة، وبرامج متخصصة — كل ما تحتاجه في مكان واحد بتسليم فوري.</p>
+  <a href="#products" class="btn-primary">تصفح المنتجات</a>
+  <a href="#" class="btn-outline">تعرّف علينا</a>
+</section>
+
+<!-- Features Bar -->
+<div class="features-bar">
+  <div class="features-inner">
+    <div class="feature-item">
+      <span class="feature-icon">⚡</span>
+      <div class="feature-text">
+        <strong>تسليم فوري</strong>
+        <span>بعد إتمام الدفع مباشرة</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">🔒</span>
+      <div class="feature-text">
+        <strong>دفع آمن 100%</strong>
+        <span>بوابات دفع موثوقة</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">♾️</span>
+      <div class="feature-text">
+        <strong>وصول دائم</strong>
+        <span>لا انتهاء للملفات</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">🎧</span>
+      <div class="feature-text">
+        <strong>دعم فني</strong>
+        <span>فريق جاهز لمساعدتك</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Products Section -->
+<section class="section" id="products">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2 class="section-title">المنتجات المميزة</h2>
+      <a href="#" class="see-all">عرض الكل ←</a>
+    </div>
+    <div class="products-grid">
+
+      <!-- Card 1 -->
+      <div class="product-card">
+        <span class="product-badge">⚡ رقمي</span>
+        <div class="product-image">🎨</div>
+        <div class="product-info">
+          <div class="product-category">تصميم</div>
+          <div class="product-name">حزمة قوالب Figma الاحترافية</div>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-count">(128)</span>
+          </div>
+          <div class="product-footer">
+            <div>
+              <span class="product-old-price">249 ر.س</span>
+              <span class="product-price">149 ر.س</span>
+            </div>
+            <button class="add-btn">أضف للسلة</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="product-card">
+        <span class="product-badge">⚡ رقمي</span>
+        <span class="discount-badge">-40%</span>
+        <div class="product-image">💻</div>
+        <div class="product-info">
+          <div class="product-category">برمجة</div>
+          <div class="product-name">كورس React.js من الصفر للاحتراف</div>
+          <div class="product-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="rating-count">(87)</span>
+          </div>
+          <div class="product-footer">
+            <div>
+              <span class="product-old-price">399 ر.س</span>
+              <span class="product-price">239 ر.س</span>
+            </div>
+            <button class="add-btn">أضف للسلة</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="product-card">
+        <span class="product-badge">⚡ رقمي</span>
+        <div class="product-image">📈</div>
+        <div class="product-info">
+          <div class="product-category">تسويق</div>
+          <div class="product-name">دليل التسويق الرقمي الشامل 2025</div>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-count">(214)</span>
+          </div>
+          <div class="product-footer">
+            <span class="product-price">89 ر.س</span>
+            <button class="add-btn">أضف للسلة</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="product-card">
+        <span class="product-badge">⚡ رقمي</span>
+        <div class="product-image">🎵</div>
+        <div class="product-info">
+          <div class="product-category">صوتيات</div>
+          <div class="product-name">حزمة مؤثرات صوتية للمونتاج</div>
+          <div class="product-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="rating-count">(56)</span>
+          </div>
+          <div class="product-footer">
+            <span class="product-price">59 ر.س</span>
+            <button class="add-btn">أضف للسلة</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Product Page Preview -->
+<div class="product-page-preview">
+  <div class="section-inner" style="margin-bottom:32px;">
+    <h2 class="section-title">معاينة صفحة المنتج</h2>
+  </div>
+  <div class="product-page-inner">
+    <div class="product-img-main">🎨</div>
+    <div class="product-page-info">
+      <div class="digital-notice">
+        <span class="digital-notice-icon">⚡</span>
+        <div class="digital-notice-text">
+          <strong>منتج رقمي — تسليم فوري</strong>
+          <span>ستحصل على المنتج مباشرة بعد إتمام الدفع</span>
+        </div>
+      </div>
+      <div class="product-page-title">حزمة قوالب Figma الاحترافية</div>
+      <div style="color:var(--text-muted); font-size:14px; margin-bottom:4px;">أكثر من 200 قالب جاهز للاستخدام الفوري</div>
+      <div style="color:#F59E0B; font-size:14px; margin-bottom:4px;">★★★★★ <span style="color:var(--text-muted);">(128 تقييم)</span></div>
+      <div class="product-page-price">149 ر.س <span style="font-size:16px; color:var(--text-muted); text-decoration:line-through; font-weight:400;">249 ر.س</span></div>
+
+      <div class="digital-features">
+        <div class="df-item"><span>📥</span><span>تحميل فوري</span></div>
+        <div class="df-item"><span>🔒</span><span>دفع آمن</span></div>
+        <div class="df-item"><span>♾️</span><span>وصول دائم</span></div>
+        <div class="df-item"><span>🎧</span><span>دعم فني</span></div>
+      </div>
+
+      <button class="buy-btn">🛒 أضف إلى السلة</button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">دي<span>مو</span></div>
+      <p class="footer-desc">متجرك الأول للمنتجات الرقمية عالية الجودة — كورسات، قوالب، وبرامج.</p>
+      <div class="footer-badges">
+        <span class="footer-badge">⚡ تسليم فوري</span>
+        <span class="footer-badge">🔒 آمان تام</span>
+        <span class="footer-badge">📦 رقمي</span>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>روابط سريعة</h4>
+      <a href="#">الرئيسية</a>
+      <a href="#">المنتجات</a>
+      <a href="#">الكورسات</a>
+      <a href="#">القوالب</a>
+      <a href="#">من نحن</a>
+    </div>
+    <div class="footer-col">
+      <h4>تواصل معنا</h4>
+      <a href="#">📧 info@demo.sa</a>
+      <a href="#">📱 واتساب</a>
+      <a href="#">🐦 تويتر</a>
+      <a href="#">📸 إنستغرام</a>
+    </div>
+    <div class="footer-col">
+      <h4>الدعم</h4>
+      <a href="#">سياسة الخصوصية</a>
+      <a href="#">شروط الاستخدام</a>
+      <a href="#">سياسة الاسترجاع</a>
+      <a href="#">الأسئلة الشائعة</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    جميع الحقوق محفوظة © 2025 ديمو | مدعوم بـ سلة
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    var html = document.documentElement;
+    var current = html.getAttribute('data-theme') || 'light';
+    var next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('demo-theme', next);
+    document.getElementById('themeIcon').textContent = next === 'dark' ? '☀️' : '🌙';
+  }
+
+  // Set initial icon
+  (function(){
+    var t = document.documentElement.getAttribute('data-theme') || 'light';
+    var icon = document.getElementById('themeIcon');
+    if (icon) icon.textContent = t === 'dark' ? '☀️' : '🌙';
+  })();
+</script>
+</body>
+</html>
